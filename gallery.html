@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - The Gladys Erude Organization</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <meta name="description" content="View our photo gallery showcasing events, activities, and memories from The Gladys Erude Organization.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gallery-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        .gallery-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .gallery-item img {
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        /* Enhanced UI */
+        .gallery-gradient {
+            background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.15) 60%, rgba(0,0,0,0));
+            transition: opacity 0.3s ease;
+        }
+        .gallery-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background: rgba(26,65,167,0.95);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            backdrop-filter: saturate(150%) blur(2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            pointer-events: none;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 400ms ease-out both;
+        }
+        /* Lightbox */
+        .lightbox-backdrop { background: rgba(0,0,0,0.85); }
+        .lightbox-btn { background: rgba(255,255,255,0.15); color: #fff; }
+        .lightbox-btn:hover { background: rgba(255,255,255,0.25); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html">
+                        <img class="h-10 w-auto object-contain drop-shadow-sm transition-transform duration-300 hover:scale-105" src="logo.jpg" alt="The Gladys Erude Organization Logo">
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html" class="px-3 py-2 text-sm font-medium text-black hover:text-[#1A41A7] border-b-2 border-transparent hover:border-[#1A41A7] transition-all duration-300 ease-in-out">Home</a>
+                        <a href="about.html" class="px-3 py-2 text-sm font-medium text-black hover:text-[#1A41A7] border-b-2 border-transparent hover:border-[#1A41A7] transition-all duration-300 ease-in-out">About GEO</a>
+                        <a href="memorial-run.html" class="px-3 py-2 text-sm font-medium text-black hover:text-[#1A41A7] border-b-2 border-transparent hover:border-[#1A41A7] transition-all duration-300 ease-in-out">Memorial Run</a>
+                        <a href="news.html" class="px-3 py-2 text-sm font-medium text-black hover:text-[#1A41A7] border-b-2 border-transparent hover:border-[#1A41A7] transition-all duration-300 ease-in-out">News</a>
+                        <a href="gallery.html" class="px-3 py-2 text-sm font-medium text-[#1A41A7] border-b-2 border-[#1A41A7]">Gallery</a>
+                        <a href="contact.html" class="px-3 py-2 text-sm font-medium text-black hover:text-[#1A41A7] border-b-2 border-transparent hover:border-[#1A41A7] transition-all duration-300 ease-in-out">Contact</a>
+                        <a href="shop.html" class="px-3 py-2 text-sm font-medium text-black hover:text-[#1A41A7] border-b-2 border-transparent hover:border-[#1A41A7] transition-all duration-300 ease-in-out">Shop</a>
+                        <a href="donate.html" class="ml-4 px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-full hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">Donate</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-[#1A41A7] hover:bg-[#E6E6E6] transition-colors duration-300">Home</a>
+                <a href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-[#1A41A7] hover:bg-[#E6E6E6] transition-colors duration-300">About GEO</a>
+                <a href="memorial-run.html" class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-[#1A41A7] hover:bg-[#E6E6E6] transition-colors duration-300">Memorial Run</a>
+                <a href="news.html" class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-[#1A41A7] hover:bg-[#E6E6E6] transition-colors duration-300">News</a>
+                <a href="gallery.html" class="block px-3 py-2 rounded-md text-base font-medium text-[#1A41A7] bg-[#E6E6E6]">Gallery</a>
+                <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-[#1A41A7] hover:bg-[#E6E6E6] transition-colors duration-300">Contact</a>
+                <a href="shop.html" class="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-[#1A41A7] hover:bg-[#E6E6E6] transition-colors duration-300">Shop</a>
+                <a href="donate.html" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-colors duration-300">Donate</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-[#1A41A7] text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-bold mb-4">GEO Moments 2023/2024</h1>
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto">Capturing moments from our events, activities, and the impact we're making in our community.</p>
+        </div>
+    </div>
+
+    <!-- Gallery Filters -->
+    <div class="bg-white py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-2">
+                <button class="px-4 py-2 text-sm font-medium rounded-full bg-[#E6E6E6] text-[#1A41A7] hover:bg-[#1A41A7] hover:text-white transition-colors duration-200" data-filter="all">All</button>
+                <button class="px-4 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-800 hover:bg-[#E6E6E6] hover:text-[#1A41A7] transition-colors duration-200" data-filter="events">Events</button>
+                <button class="px-4 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-800 hover:bg-[#E6E6E6] hover:text-[#1A41A7] transition-colors duration-200" data-filter="community">Community</button>
+                <button class="px-4 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-800 hover:bg-[#E6E6E6] hover:text-[#1A41A7] transition-colors duration-200" data-filter="memorial-run">Memorial Run</button>
+                <button class="px-4 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-800 hover:bg-[#E6E6E6] hover:text-[#1A41A7] transition-colors duration-200" data-filter="volunteers">Volunteers</button>
+            </div>
+            <div id="filter-count" class="mt-3 text-sm text-gray-500 text-center"></div>
+        </div>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+            <!-- Load More Button -->
+            <div class="mt-12 text-center">
+                <button id="load-more-button" class="px-6 py-3 bg-[#1A41A7] text-white font-medium rounded-md hover:bg-[#2443A4] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1A41A7] transition-colors duration-200">
+                    Load More Photos
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="hidden fixed inset-0 z-50">
+        <div class="absolute inset-0 lightbox-backdrop"></div>
+        <button id="lightbox-close" aria-label="Close" class="absolute top-4 right-4 p-2 rounded-full lightbox-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <button id="lightbox-prev" aria-label="Previous" class="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full lightbox-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button id="lightbox-next" aria-label="Next" class="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full lightbox-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="absolute inset-0 flex flex-col items-center justify-center px-4">
+            <img id="lightbox-image" alt="Preview" class="max-h-[80vh] max-w-[92vw] rounded-lg shadow-2xl">
+            <div id="lightbox-caption" class="mt-4 text-center text-white"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About Us</h3>
+                    <p class="text-gray-400 text-sm">The Gladys Erude Organization is dedicated to making a positive impact in our community through education, support, and empowerment initiatives.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-400 hover:text-white text-sm">About Us</a></li>
+                        <li><a href="memorial-run.html" class="text-gray-400 hover:text-white text-sm">Memorial Run</a></li>
+                        <li><a href="news.html" class="text-gray-400 hover:text-white text-sm">News & Events</a></li>
+                        <li><a href="gallery.html" class="text-gray-400 hover:text-white text-sm">Gallery</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white text-sm">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
+                    <address class="not-italic text-gray-400 text-sm">
+                        <p>1234 Charity Way</p>
+                        <p>City, State 12345</p>
+                        <p>Email: info@gladyserude.org</p>
+                        <p>Phone: (123) 456-7890</p>
+                    </address>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+                    <p class="text-gray-400 text-sm mb-2">Subscribe to our newsletter for updates</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 text-sm text-gray-900 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-md text-sm font-medium">
+                            Subscribe
+                        </button>
+                    </form>
+                    <div class="flex space-x-4 mt-4">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/thegladyserudeorganization?mibextid=LQQJ4d" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-blue-600 transition-colors duration-300 transform hover:scale-110">
+                            <span class="sr-only">Facebook</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@g.e.o_01?_t=8evJFDgpI9D&_r=1" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-500 transition-colors duration-300 transform hover:scale-110">
+                            <span class="sr-only">TikTok</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                            </svg>
+                        </a>
+                        
+                        <!-- YouTube -->
+                        <a href="https://youtube.com/@GladysErudeOrganization" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-red-600 transition-colors duration-300 transform hover:scale-110">
+                            <span class="sr-only">YouTube</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                        
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/the-gladys-erude-organization-geo" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-blue-700 transition-colors duration-300 transform hover:scale-110">
+                            <span class="sr-only">LinkedIn</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        
+                        <!-- Instagram -->
+                        <a href="https://instagram.com/thegladyserudeorganization?igshid=MzRlODBiNWFlZA==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-400 transition-colors duration-300 transform hover:scale-110">
+                            <span class="sr-only">Instagram</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700">
+                <p class="text-gray-400 text-sm text-center">&copy; 2023 The Gladys Erude Organization. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile menu script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', function() {
+                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Gallery data and rendering
+            const galleryGrid = document.getElementById('gallery-grid');
+            const loadMoreButton = document.getElementById('load-more-button');
+            const filterButtons = document.querySelectorAll('[data-filter]');
+            const filterCount = document.getElementById('filter-count');
+
+            const galleryData = [];
+
+            const titlePools = {
+                'community': [
+                    'Neighbors in Action', 'Joy in Service', 'Faces of Hope', 'After-school Smiles',
+                    'Classroom Moments', 'Community Clinic Day', 'Girls in STEM', 'Books and Bright Futures',
+                    'Food Drive Heroes', 'Village Voices', 'Planting Change', 'Art for All',
+                    'Sports for Peace', 'Mentorship in Motion', 'Youth Leadership', 'Mothers’ Circle',
+                    'Health Awareness Walk', 'Reading Corner', 'Dance & Culture', 'Coding Club',
+                    'Library Launch', 'Clean-Up Crew', 'Market Day Outreach', 'Sharing Warm Meals',
+                    'Back-to-School Drive', 'Career Talk', 'Creative Workshop', 'Music Uplift',
+                    'School Supplies Drive', 'Community Dialogue', 'Elderly Care Visit', 'Talent Showcase',
+                    'Tree Planting', 'Health Screening', 'Girls Talk', 'Water Project',
+                    'Festival Smiles', 'Village Together'
+                ],
+                'events': [
+                    'Opening Ceremony', 'Keynote Highlights', 'Panel Insights', 'Workshops in Session',
+                    'Candid Connections', 'Impact in Focus', 'Award Moments', 'Closing Reflections',
+                    'Breakout Brainstorms', 'Partners & Pledges', 'Innovation Demos', 'Media Moments',
+                    'Community Roundtable', 'Spotlight Stories', 'Changemakers Gathering'
+                ],
+                'memorial-run': [
+                    'Start Line Energy', 'On the Trail', 'Friends That Run', 'Cheer Squad', 'Finish Line Magic'
+                ],
+                'volunteers': [
+                    'Hands that Help', 'Briefing & Bonding', 'Field Work', 'Packing with Purpose', 'Team Portrait'
+                ]
+            };
+
+            const subtitlePools = {
+                'community': [
+                    'Grassroots Impact', 'Outreach & Engagement', 'Local Partnerships', 'Youth & Education',
+                    'Health & Wellness', 'Arts & Culture', 'Sustainability in Action', 'Learning & Laughter'
+                ],
+                'events': [
+                    'Gathering for Change', 'Ideas into Action', 'Networking with Purpose', 'Inspiration & Insight'
+                ],
+                'memorial-run': [
+                    'Stride for a Cause', 'Every Mile Matters', 'Run. Remember. Inspire.'
+                ],
+                'volunteers': [
+                    'Powered by Volunteers', 'Hearts at Work', 'Making Good Happen'
+                ]
+            };
+
+            const categoryCount = { 'community': 0, 'events': 0, 'memorial-run': 0, 'volunteers': 0 };
+
+            function getCreativeTitle(category, index) {
+                const pool = titlePools[category] || ['GEO Moment'];
+                return pool[index % pool.length];
+            }
+
+            function getCreativeSubtitle(category, index) {
+                const pool = subtitlePools[category] || ['Together We Thrive'];
+                return pool[index % pool.length];
+            }
+
+            function addCreativeItem(src, category) {
+                const idx = categoryCount[category]++;
+                galleryData.push({
+                    src,
+                    category,
+                    title: getCreativeTitle(category, idx),
+                    subtitle: getCreativeSubtitle(category, idx)
+                });
+            }
+
+            // Community images (1 - 38)
+            for (let i = 1; i <= 38; i++) {
+                addCreativeItem(`Community/Community${i}.jpg`, 'community');
+            }
+
+            // Events images (Event2 - Event11)
+            for (let i = 2; i <= 11; i++) {
+                addCreativeItem(`Events/Event${i}.jpg`, 'events');
+            }
+            // Events images with 'Events' prefix (Events1, Events12 - Events27)
+            addCreativeItem('Events/Events1.jpg', 'events');
+            for (let i = 12; i <= 27; i++) {
+                addCreativeItem(`Events/Events${i}.jpg`, 'events');
+            }
+
+            // Memorial Run images
+            addCreativeItem('Memorial Run/Run.jpg', 'memorial-run');
+            for (let i = 1; i <= 4; i++) {
+                addCreativeItem(`Memorial Run/Run${i}.jpg`, 'memorial-run');
+            }
+
+            // Volunteers images
+            addCreativeItem('Volunteers/Volunteer.jpg', 'volunteers');
+            for (let i = 1; i <= 4; i++) {
+                addCreativeItem(`Volunteers/Volunteer${i}.jpg`, 'volunteers');
+            }
+
+            const ITEMS_PER_PAGE = 9;
+            let currentFilter = 'all';
+            let visibleCount = ITEMS_PER_PAGE;
+            let currentRenderedData = [];
+
+            function labelCategory(cat) {
+                switch (cat) {
+                    case 'events': return 'Events';
+                    case 'community': return 'Community';
+                    case 'memorial-run': return 'Memorial Run';
+                    case 'volunteers': return 'Volunteers';
+                    default: return '';
+                }
+            }
+
+            function getFilteredData() {
+                return currentFilter === 'all'
+                    ? galleryData
+                    : galleryData.filter(item => item.category === currentFilter);
+            }
+
+            function updateFilterButtonsCounts() {
+                filterButtons.forEach(btn => {
+                    const label = btn.getAttribute('data-filter')
+                        .replace('memorial-run', 'Memorial Run')
+                        .replace('community', 'Community')
+                        .replace('events', 'Events')
+                        .replace('volunteers', 'Volunteers')
+                        .replace('all', 'All');
+                    btn.textContent = label;
+                });
+            }
+
+            function renderGallery() {
+                const data = getFilteredData();
+                galleryGrid.innerHTML = '';
+                currentRenderedData = data.slice(0, visibleCount);
+
+                currentRenderedData.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'gallery-item bg-white rounded-lg overflow-hidden shadow-md animate-fade-in-up';
+                    card.setAttribute('data-category', item.category);
+                    card.innerHTML = `
+                        <a href="#" data-index="${index}" class="block relative h-64 overflow-hidden group">
+                            <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover" loading="lazy">
+                            <div class="absolute inset-0 gallery-gradient opacity-90 group-hover:opacity-100"></div>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-white text-sm" style="background: rgba(255,255,255,0.15)">View Photo</span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+                                <h3 class="font-medium">${item.title}</h3>
+                                <p class="text-sm text-gray-200">${item.subtitle}</p>
+                            </div>
+                        </a>
+                    `;
+                    galleryGrid.appendChild(card);
+                });
+
+                if (visibleCount >= data.length) {
+                    loadMoreButton.classList.add('hidden');
+                } else {
+                    loadMoreButton.classList.remove('hidden');
+                }
+
+                // Update summary count
+                filterCount.textContent = `Showing ${Math.min(visibleCount, data.length)} of ${data.length} photos`;
+            }
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    currentFilter = this.getAttribute('data-filter');
+                    visibleCount = ITEMS_PER_PAGE;
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => {
+                        if (btn === this) {
+                            btn.classList.remove('bg-gray-100', 'text-gray-800');
+                            btn.classList.add('bg-[#E6E6E6]', 'text-[#1A41A7]');
+                        } else {
+                            btn.classList.remove('bg-[#E6E6E6]', 'text-[#1A41A7]');
+                            btn.classList.add('bg-gray-100', 'text-gray-800');
+                        }
+                    });
+                    
+                    renderGallery();
+                });
+            });
+
+            loadMoreButton.addEventListener('click', function() {
+                const original = loadMoreButton.innerHTML;
+                loadMoreButton.disabled = true;
+                loadMoreButton.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-5 w-5 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg> Loading...';
+                setTimeout(() => {
+                    visibleCount += ITEMS_PER_PAGE;
+                    renderGallery();
+                    loadMoreButton.disabled = false;
+                    loadMoreButton.innerHTML = original;
+                }, 300);
+            });
+
+            // Lightbox logic
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-image');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const btnPrev = document.getElementById('lightbox-prev');
+            const btnNext = document.getElementById('lightbox-next');
+            const btnClose = document.getElementById('lightbox-close');
+            let lightboxIndex = 0;
+
+            function showLightbox(index) {
+                const data = currentRenderedData;
+                if (!data.length) return;
+                lightboxIndex = (index + data.length) % data.length;
+                const item = data[lightboxIndex];
+                lightboxImg.src = item.src;
+                lightboxImg.alt = item.title;
+                lightboxCaption.textContent = `${item.title} • ${item.subtitle}`;
+                lightbox.classList.remove('hidden');
+            }
+
+            function closeLightbox() {
+                lightbox.classList.add('hidden');
+                lightboxImg.src = '';
+            }
+
+            galleryGrid.addEventListener('click', function(e) {
+                const link = e.target.closest('a[data-index]');
+                if (!link) return;
+                e.preventDefault();
+                const idx = parseInt(link.getAttribute('data-index'), 10) || 0;
+                showLightbox(idx);
+            });
+
+            btnPrev.addEventListener('click', () => showLightbox(lightboxIndex - 1));
+            btnNext.addEventListener('click', () => showLightbox(lightboxIndex + 1));
+            btnClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+            document.addEventListener('keydown', (e) => {
+                if (lightbox.classList.contains('hidden')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') showLightbox(lightboxIndex - 1);
+                if (e.key === 'ArrowRight') showLightbox(lightboxIndex + 1);
+            });
+
+            // Initial render
+            updateFilterButtonsCounts();
+            renderGallery();
+        });
+    </script>
+</body>
+</html>
